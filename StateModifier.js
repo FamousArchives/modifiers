@@ -118,12 +118,12 @@ define(function(require, exports, module) {
     };
 
     /**
-     * Set the origin of this modifier, either statically or
+     * Set the alignment of this modifier, either statically or
      *   through a provided Transitionable.
      *
-     * @method setOrigin
+     * @method setAlign
      *
-     * @param {Array.Number} origin two element array with values between 0 and 1.
+     * @param {Array.Number} align two element array with values between 0 and 1.
      * @param {Transitionable} transition Valid transitionable object
      * @param {Function} callback callback to call after transition completes
      * @return {StateModifier} this
