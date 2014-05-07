@@ -17,7 +17,7 @@ define(function(require, exports, module) {
      *  A collection of visual changes to be
      *    applied to another renderable component, strongly coupled with the state that defines
      *    those changes. This collection includes a
-     *    transform matrix, an opacity constant, a size, an origin specifier.
+     *    transform matrix, an opacity constant, a size, an origin specifier, and an alignment specifier.
      *    StateModifier objects can be added to any RenderNode or object
      *    capable of displaying renderables.  The StateModifier's children and descendants
      *    are transformed by the amounts specified in the modifier's properties.
@@ -28,6 +28,7 @@ define(function(require, exports, module) {
      * @param {Transform} [options.transform] affine transformation matrix
      * @param {Number} [options.opacity]
      * @param {Array.Number} [options.origin] origin adjustment
+     * @param {Array.Number} [options.align] align adjustment
      * @param {Array.Number} [options.size] size to apply to descendants
      */
     function StateModifier(options) {
