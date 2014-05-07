@@ -34,22 +34,26 @@ define(function(require, exports, module) {
         this._transformState = new TransitionableTransform(Transform.identity);
         this._opacityState = new Transitionable(1);
         this._originState = new Transitionable([0, 0]);
+        this._alignState = new Transitionable([0, 0]);
         this._sizeState = new Transitionable([0, 0]);
 
         this._modifier = new Modifier({
             transform: this._transformState,
             opacity: this._opacityState,
             origin: null,
+            align: null,
             size: null
         });
 
         this._hasOrigin = false;
+        this._hasAlign = false;
         this._hasSize = false;
 
         if (options) {
             if (options.transform) this.setTransform(options.transform);
             if (options.opacity !== undefined) this.setOpacity(options.opacity);
             if (options.origin) this.setOrigin(options.origin);
+            if (options.align) this.setAlign(options.align);
             if (options.size) this.setSize(options.size);
         }
     }
@@ -114,6 +118,33 @@ define(function(require, exports, module) {
     };
 
     /**
+     * Set the origin of this modifier, either statically or
+     *   through a provided Transitionable.
+     *
+     * @method setOrigin
+     *
+     * @param {Array.Number} origin two element array with values between 0 and 1.
+     * @param {Transitionable} transition Valid transitionable object
+     * @param {Function} callback callback to call after transition completes
+     * @return {StateModifier} this
+     */
+    StateModifier.prototype.setAlign = function setOrigin(align, transition, callback) {
+        if (align === null) {
+            if (this._hasAlign) {
+                this._modifier.alignFrom(null);
+                this._hasAlign = false;
+            }
+            return this;
+        }
+        else if (!this._hasAlign) {
+            this._hasAlign = true;
+            this._modifier.alignFrom(this._alignState);
+        }
+        this._alignState.set(align, transition, callback);
+        return this;
+    };
+
+    /**
      * Set the size of this modifier, either statically or
      *   through a provided Transitionable.
      *
@@ -149,6 +180,7 @@ define(function(require, exports, module) {
         this._transformState.halt();
         this._opacityState.halt();
         this._originState.halt();
+        this._alignState.halt();
         this._sizeState.halt();
     };
 
@@ -190,6 +222,16 @@ define(function(require, exports, module) {
      */
     StateModifier.prototype.getOrigin = function getOrigin() {
         return this._hasOrigin ? this._originState.get() : null;
+    };
+
+    /**
+     * Get the current state of the align component.
+     *
+     * @method getAlign
+     * @return {Object} align provider object
+     */
+    StateModifier.prototype.getAlign = function getAlign() {
+        return this._hasAlign ? this._alignState.get() : null;
     };
 
     /**
